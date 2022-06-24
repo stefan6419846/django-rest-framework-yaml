@@ -88,5 +88,5 @@ if ReturnList:
 
 if ErrorDetail:
     SafeDumper.add_representer(ErrorDetail, yaml_represent_text)
-    
+
 SafeDumper.add_representer(UUID, yaml_represent_text)
