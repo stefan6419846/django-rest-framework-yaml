@@ -5,10 +5,11 @@ import unittest
 
 from decimal import Decimal
 from io import BytesIO
+from uuid import UUID
 
 from django.test import TestCase
 
-from rest_framework_yaml.compat import Hyperlink
+from rest_framework_yaml.compat import ErrorDetail, Hyperlink
 from rest_framework_yaml.parsers import YAMLParser
 from rest_framework_yaml.renderers import YAMLRenderer
 
@@ -67,6 +68,30 @@ class YAMLRendererTests(TestCase):
         )
         self.assertYAMLContains(
             content.decode("utf-8"), "field: http://pépé.com?great-answer=42"
+        )
+
+    def test_render_uuid(self):
+        """
+        Test YAML UUID rendering.
+        """
+        renderer = YAMLRenderer()
+        content = renderer.render(
+            {"field": UUID(int=42)},
+            "application/yaml",
+        )
+        self.assertYAMLContains(
+            content.decode("utf-8"), f"field: {UUID(int=42)!s}"
+        )
+
+    @unittest.skipUnless(ErrorDetail, "ErrorDetail is undefined")
+    def test_render_error_detail(self):
+        renderer = YAMLRenderer()
+        content = renderer.render(
+            {"field": ErrorDetail("Some ErrorDetail test message")},
+            "application/yaml",
+        )
+        self.assertYAMLContains(
+            content.decode("utf-8"), "field: Some ErrorDetail test message"
         )
 
     def assertYAMLContains(self, content, string):

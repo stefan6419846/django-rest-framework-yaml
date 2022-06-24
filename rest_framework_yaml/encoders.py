@@ -33,6 +33,12 @@ class SafeDumper(yaml.SafeDumper):
     def represent_decimal(self, data):
         return self.represent_scalar("tag:yaml.org,2002:str", force_str(data))
 
+    @classmethod
+    def _fix_value_before_representation(cls, value):
+        if isinstance(value, UUID):
+            return str(value)
+        return value
+
     def represent_mapping(self, tag, mapping, flow_style=None):
         value = []
         node = yaml.MappingNode(tag, value, flow_style=flow_style)
@@ -44,6 +50,7 @@ class SafeDumper(yaml.SafeDumper):
             if not isinstance(mapping, OrderedDict):
                 mapping.sort()
         for item_key, item_value in mapping:
+            item_value = self._fix_value_before_representation(item_value)
             node_key = self.represent_data(item_key)
             node_value = self.represent_data(item_value)
             if not (
@@ -89,5 +96,3 @@ if ReturnList:
 
 if ErrorDetail:
     SafeDumper.add_representer(ErrorDetail, yaml_represent_text)
-
-SafeDumper.add_representer(UUID, yaml_represent_text)
