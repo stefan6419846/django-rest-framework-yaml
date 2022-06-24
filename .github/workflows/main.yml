@@ -3,7 +3,7 @@
 
   on:
     push:
-      branches: ["master"]
+      branches: ["master", "with_pr_fixes"]
     pull_request:
       branches: ["master"]
     # Allow rebuilds via API.
