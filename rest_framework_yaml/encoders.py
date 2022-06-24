@@ -9,6 +9,7 @@ import types
 from django.utils.encoding import force_str
 
 from .compat import (
+    ErrorDetail,
     Hyperlink,
     OrderedDict,
     ReturnDict,
@@ -83,3 +84,6 @@ if ReturnList:
     SafeDumper.add_representer(
         ReturnList, yaml.representer.SafeRepresenter.represent_list
     )
+
+if ErrorDetail:
+    SafeDumper.add_representer(ErrorDetail, yaml_represent_text)
