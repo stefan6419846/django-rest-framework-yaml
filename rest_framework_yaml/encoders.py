@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import decimal
 import types
+
 from uuid import UUID
 
 from django.utils.encoding import force_str
