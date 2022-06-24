@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import decimal
 import types
+from uuid import UUID
 
 from django.utils.encoding import force_str
 
@@ -87,3 +88,5 @@ if ReturnList:
 
 if ErrorDetail:
     SafeDumper.add_representer(ErrorDetail, yaml_represent_text)
+    
+SafeDumper.add_representer(UUID, yaml_represent_text)
