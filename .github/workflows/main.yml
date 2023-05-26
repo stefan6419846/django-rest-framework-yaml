@@ -19,12 +19,12 @@
 
       strategy:
         matrix:
-          platform: ["ubuntu-latest"]
+          platform: ["ubuntu-20.04"]
           python-version: ["3.6", "3.7", "3.8"]
 
       steps:
-        - uses: "actions/checkout@v2"
-        - uses: "actions/setup-python@v2"
+        - uses: "actions/checkout@v3"
+        - uses: "actions/setup-python@v4"
           with:
             python-version: "${{ matrix.python-version }}"
         - name: "Install dependencies"
@@ -44,8 +44,8 @@
       runs-on: "ubuntu-latest"
 
       steps:
-        - uses: "actions/checkout@v2"
-        - uses: "actions/setup-python@v2"
+        - uses: "actions/checkout@v3"
+        - uses: "actions/setup-python@v4"
           with:
             python-version: "3.8"
 
@@ -67,8 +67,8 @@
       runs-on: "${{ matrix.os }}"
 
       steps:
-        - uses: "actions/checkout@v2"
-        - uses: "actions/setup-python@v2"
+        - uses: "actions/checkout@v3"
+        - uses: "actions/setup-python@v4"
           with:
             python-version: "3.8"
         - name: "Install in dev mode"

@@ -48,7 +48,10 @@ class SafeDumper(yaml.SafeDumper):
         if hasattr(mapping, "items"):
             mapping = list(mapping.items())
             if not isinstance(mapping, OrderedDict):
-                mapping.sort()
+                try:
+                    mapping.sort()
+                except TypeError:
+                    pass
         for item_key, item_value in mapping:
             item_value = self._fix_value_before_representation(item_value)
             node_key = self.represent_data(item_key)
