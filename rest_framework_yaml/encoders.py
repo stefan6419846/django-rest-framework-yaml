@@ -1,6 +1,7 @@
 """
 Helper classes for parsers.
 """
+
 from __future__ import unicode_literals
 
 import decimal
