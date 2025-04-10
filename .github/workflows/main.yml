@@ -9,6 +9,7 @@
     # Allow rebuilds via API.
     repository_dispatch:
       types: rebuild
+    workflow_dispatch:
 
   jobs:
     tests:
