@@ -5,7 +5,7 @@
     push:
       branches: ["master", "with_pr_fixes"]
     pull_request:
-      branches: ["master"]
+      branches: ["master", "with_pr_fixes"]
     # Allow rebuilds via API.
     repository_dispatch:
       types: rebuild
