@@ -2,10 +2,10 @@
 Helper classes for parsers.
 """
 
-from __future__ import unicode_literals
 
 import decimal
 import types
+from collections import OrderedDict
 
 from uuid import UUID
 
@@ -14,7 +14,6 @@ from django.utils.encoding import force_str
 from .compat import (
     ErrorDetail,
     Hyperlink,
-    OrderedDict,
     ReturnDict,
     ReturnList,
     yaml,

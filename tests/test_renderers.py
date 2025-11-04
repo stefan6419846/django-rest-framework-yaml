@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import unittest
 
 from decimal import Decimal
@@ -23,14 +20,14 @@ class YAMLRendererTests(TestCase):
         """
         Test basic YAML rendering.
         """
-        _yaml_repr = "foo:\n- bar\n- baz\n"
+        yaml_repr = "foo:\n- bar\n- baz\n"
 
         obj = {"foo": ["bar", "baz"]}
 
         renderer = YAMLRenderer()
         content = renderer.render(obj, "application/yaml")
 
-        self.assertEqual(content.decode("utf-8"), _yaml_repr)
+        self.assertEqual(yaml_repr, content.decode("utf-8"))
 
     def test_render_and_parse(self):
         """
@@ -94,25 +91,25 @@ class YAMLRendererTests(TestCase):
             content.decode("utf-8"), "field: Some ErrorDetail test message"
         )
 
-    def assertYAMLContains(self, content, string):
-        self.assertTrue(string in content, "%r not in %r" % (string, content))
+    def assertYAMLContains(self, content, expected):
+        self.assertIn(expected, content)
 
     def test_proper_encoding(self):
-        _yaml_repr = "countries:\n- United Kingdom\n- France\n- España"
+        yaml_repr = "countries:\n- United Kingdom\n- France\n- España"
         obj = {"countries": ["United Kingdom", "France", "España"]}
         renderer = YAMLRenderer()
         content = renderer.render(obj, "application/yaml")
-        self.assertEqual(content.strip(), _yaml_repr.encode("utf-8"))
+        self.assertEqual(yaml_repr.encode("utf-8"), content.strip())
 
     def test_render_none_type(self):
         """
         Test YAML rendering with None type
         """
-        _yaml_repr = "foo:\n- bar\n- baz\nnull:\n- null\n"
+        yaml_repr = "foo:\n- bar\n- baz\nnull:\n- null\n"
 
         obj = {"foo": ["bar", "baz"], None: [None]}
 
         renderer = YAMLRenderer()
         content = renderer.render(obj, "application/yaml")
 
-        self.assertEqual(_yaml_repr, content.decode("utf-8"))
+        self.assertEqual(content.decode("utf-8"), yaml_repr)

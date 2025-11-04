@@ -13,15 +13,15 @@ YAML support extracted as a third party package directly from the official Djang
 
 ## Requirements
 
-* Python (2.7, 3.3, 3.4)
-* Django (1.6, 1.7)
+* Python (>= 3.10)
+* Django (>= 5.2)
 
 ## Installation
 
-Install using `pip`...
+Install using `pip`:
 
 ```bash
-$ pip install djangorestframework-yaml
+$ pip install .
 ```
 
 ## Example
@@ -40,6 +40,8 @@ REST_FRAMEWORK = {
 You can also set the renderer and parser used for an individual view, or viewset, using the APIView class based views.
 
 ```python
+from django.contrib.auth import get_user_model
+
 from rest_framework import routers, serializers, viewsets
 from rest_framework_yaml.parsers import YAMLParser
 from rest_framework_yaml.renderers import YAMLRenderer
@@ -47,13 +49,13 @@ from rest_framework_yaml.renderers import YAMLRenderer
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('url', 'username', 'email', 'is_staff')
 
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
     parser_classes = (YAMLParser,)
     renderer_classes = (YAMLRenderer,)

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 import re
 import sys
+from pathlib import Path
 
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
@@ -24,14 +24,14 @@ class PyTest(TestCommand):
 
 
 def read(f):
-    return open(f, "r", encoding="utf-8").read()
+    return Path(f).read_text(encoding="utf-8")
 
 
 def get_version(package):
     """
     Return package version as listed in `__version__` in `init.py`.
     """
-    init_py = open(os.path.join(package, "__init__.py")).read()
+    init_py = Path(package, "__init__.py").read_text(encoding="utf-8")
     return re.search(
         "^__version__ = ['\"]([^'\"]+)['\"]", init_py, re.MULTILINE
     ).group(1)
@@ -81,7 +81,7 @@ install_requires = [
 extras_requires = {
     "docs": ["mkdocs>=0.11.1"],
     "tests": [
-        "Django>=1.6",
+        "Django>=4.2",
         "djangorestframework>=2.4.3",
         "pytest-django",
         "pytest",
@@ -117,7 +117,7 @@ setup(
     cmdclass={"test": PyTest},
     install_requires=install_requires,
     extras_require=extras_requires,
-    python_requires=">=3.5",
+    python_requires=">=3.10",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",

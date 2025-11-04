@@ -10,6 +10,7 @@ build/
 dist/
 *.egg-info/
 MANIFEST
+venv/
 
 bin/
 include/
