@@ -2,7 +2,6 @@
 Helper classes for parsers.
 """
 
-
 import decimal
 import types
 

@@ -2,7 +2,6 @@
 Provides YAML rendering support.
 """
 
-
 from rest_framework.renderers import BaseRenderer
 
 from .compat import yaml

@@ -2,7 +2,6 @@
 Provides YAML parsing support.
 """
 
-
 from django.conf import settings
 from django.utils.encoding import force_str
 from rest_framework.exceptions import ParseError
