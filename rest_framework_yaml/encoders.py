@@ -5,8 +5,8 @@ Helper classes for parsers.
 
 import decimal
 import types
-from collections import OrderedDict
 
+from collections import OrderedDict
 from uuid import UUID
 
 from django.utils.encoding import force_str
