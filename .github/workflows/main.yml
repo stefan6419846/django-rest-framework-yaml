@@ -6,9 +6,6 @@
       branches: ["master", "with_pr_fixes"]
     pull_request:
       branches: ["master", "with_pr_fixes"]
-    # Allow rebuilds via API.
-    repository_dispatch:
-      types: rebuild
     workflow_dispatch:
 
   jobs:
@@ -32,7 +29,7 @@
           run: |
             python -VV
             python -m site
-            python -m pip install --upgrade pip setuptools wheel
+            python -m pip install --upgrade pip setuptools
             python -m pip install --upgrade virtualenv tox tox-gh-actions
 
         - name: "Run tox targets for ${{ matrix.python-version }}"
