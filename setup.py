@@ -75,7 +75,7 @@ description = "YAML support for Django REST Framework"
 url = "https://github.com/jpadilla/django-rest-framework-yaml"
 author = "José Padilla"
 author_email = "hello@jpadilla.com"
-license = "BSD"
+license = "BSD-3-Clause"
 install_requires = [
     "PyYAML>=3.10",
 ]
@@ -124,7 +124,6 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Django",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
