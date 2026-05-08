@@ -1,75 +1,87 @@
----
-  name: CI
 
-  on:
-    push:
-      branches: ["master", "with_pr_fixes"]
-    pull_request:
-      branches: ["master", "with_pr_fixes"]
-    workflow_dispatch:
+name: CI
 
-  jobs:
-    tests:
-      name: "Python ${{ matrix.python-version }} on ${{ matrix.platform }}"
-      runs-on: "${{ matrix.platform }}"
-      env:
-        USING_COVERAGE: '3.14'
+on:
+  push:
+    branches: ["master", "with_pr_fixes"]
+  pull_request:
+    branches: ["master", "with_pr_fixes"]
+  workflow_dispatch:
 
-      strategy:
-        matrix:
-          platform: ["ubuntu-latest"]
-          python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
-      steps:
-        - uses: "actions/checkout@v6"
-        - uses: "actions/setup-python@v6"
-          with:
-            python-version: "${{ matrix.python-version }}"
-        - name: "Install dependencies"
-          run: |
-            python -VV
-            python -m site
-            python -m pip install --upgrade pip setuptools
-            python -m pip install --upgrade virtualenv tox tox-gh-actions
+permissions: {}
 
-        - name: "Run tox targets for ${{ matrix.python-version }}"
-          run: "python -m tox"
-          env:
-            PLATFORM: ${{ matrix.platform }}
+jobs:
+  tests:
+    name: "Python ${{ matrix.python-version }} on ${{ matrix.platform }}"
+    runs-on: "${{ matrix.platform }}"
+    env:
+      USING_COVERAGE: '3.14'
 
-    package:
-      name: "Build & verify package"
-      runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        platform: ["ubuntu-latest"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
-      steps:
-        - uses: "actions/checkout@v6"
-        - uses: "actions/setup-python@v6"
-          with:
-            python-version: "3.14"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: "Install dependencies"
+        run: |
+          python -VV
+          python -m site
+          python -m pip install --upgrade pip setuptools
+          python -m pip install --upgrade virtualenv tox tox-gh-actions
 
-        - name: "Install build and twine"
-          run: "python -m pip install build twine"
-        - name: "Build package"
-          run: "python -m build ."
-        - name: "List result"
-          run: "ls -l dist"
-        - name: "Check long_description"
-          run: "python -m twine check dist/*"
+      - name: "Run tox targets for ${{ matrix.python-version }}"
+        run: "python -m tox"
+        env:
+          PLATFORM: ${{ matrix.platform }}
 
-    install-dev:
-      strategy:
-        matrix:
-          os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+  package:
+    name: "Build & verify package"
+    runs-on: "ubuntu-latest"
 
-      name: "Verify dev env"
-      runs-on: "${{ matrix.os }}"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version: "3.14"
 
-      steps:
-        - uses: "actions/checkout@v6"
-        - uses: "actions/setup-python@v6"
-          with:
-            python-version: "3.14"
-        - name: "Install in dev mode"
-          run: "python -m pip install -e .[dev]"
-        - name: "Import package"
-          run: "python -c 'import rest_framework_yaml; print(rest_framework_yaml.__version__)'"
+      - name: "Install build and twine"
+        run: "python -m pip install build twine"
+      - name: "Build package"
+        run: "python -m build ."
+      - name: "List result"
+        run: "ls -l dist"
+      - name: "Check long_description"
+        run: "python -m twine check dist/*"
+
+  install-dev:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+
+    name: "Verify dev env"
+    runs-on: "${{ matrix.os }}"
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  # v6.2.0
+        with:
+          python-version: "3.14"
+      - name: "Install in dev mode"
+        run: "python -m pip install -e .[dev]"
+      - name: "Import package"
+        run: "python -c 'import rest_framework_yaml; print(rest_framework_yaml.__version__)'"
