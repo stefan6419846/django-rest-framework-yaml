@@ -1,27 +1,10 @@
 #!/usr/bin/env python
 import os
 import re
-import sys
 
 from pathlib import Path
 
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
-
-
-# This command has been borrowed from
-# https://github.com/getsentry/sentry/blob/master/setup.py
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = ["tests"]
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-
-        errno = pytest.main(self.test_args)
-        sys.exit(errno)
 
 
 def read(f):
@@ -94,15 +77,6 @@ extras_requires["dev"] = (
     extras_requires["docs"] + extras_requires["tests"] + ["tox", "pre-commit"]
 )
 
-
-if sys.argv[-1] == "publish":
-    os.system("python setup.py sdist upload")
-    os.system("python setup.py bdist_wheel upload")
-    print("You probably want to also tag the version now:")
-    print("  git tag -a {0} -m 'version {0}'".format(version))
-    print("  git push --tags")
-    sys.exit()
-
 setup(
     name=name,
     version=version,
@@ -115,7 +89,6 @@ setup(
     author_email=author_email,
     packages=get_packages(package),
     package_data=get_package_data(package),
-    cmdclass={"test": PyTest},
     install_requires=install_requires,
     extras_require=extras_requires,
     python_requires=">=3.10",
